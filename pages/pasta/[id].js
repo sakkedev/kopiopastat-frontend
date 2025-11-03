@@ -221,6 +221,10 @@ export default function Entry() {
         <meta property="og:description" content={entry.content.substring(0, 480) + (entry.content.length > 480 ? '...' : '')} />
         <meta property="og:type" content="article" />
         {entry.filename && <meta property="og:image" content={`${API_BASE}/images/${entry.id}/${entry.filename}`} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={entry.title} />
+        <meta name="twitter:description" content={entry.content.substring(0, 200) + (entry.content.length > 200 ? '...' : '')} />
+        {entry.filename && <meta name="twitter:image" content={`${API_BASE}/images/${entry.id}/${entry.filename}`} />}
       </Head>
       <Header />
       <div className="button-group-center">
