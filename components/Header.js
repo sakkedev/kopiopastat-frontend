@@ -55,11 +55,11 @@ export default function Header() {
           <Link href="/recent/1" title={translations.recentEdits} className="glyph"><MdHistory size={24} color="currentColor" /></Link>
           <button onClick={handleRandom} title={translations.random} className="glyph"><MdShuffle size={24} color="currentColor" /></button>
           <Link href="/search" title={translations.search} className="glyph"><MdSearch size={24} color="currentColor" /></Link>
-          <a href="http://127.0.0.1:8080/download_backup" download title={translations.downloadBackup} className="glyph"><MdDownload size={24} color="currentColor" /></a>
+          <a href="https://kopiopastat.org/api/download_backup" download title={translations.downloadBackup} className="glyph"><MdDownload size={24} color="currentColor" /></a>
           {loggedIn ? (
             <button onClick={handleLogout} title={translations.logoutTitle} className="glyph"><MdLogout size={24} color="currentColor" /></button>
           ) : (
-            <Link href="/login" title={translations.login} className="glyph"><MdLogin size={24} color="currentColor" /></Link>
+            <Link href="/login" title={translations.login} className="glyph"><MdLogin size={18} color="currentColor" /></Link>
           )}
           <button onClick={toggleTheme} title={isDark ? translations.switchToLight : translations.switchToDark} className="glyph">
             {isDark ? <MdWbSunny size={24} color="currentColor" /> : <MdBrightness2 size={24} color="currentColor" />}

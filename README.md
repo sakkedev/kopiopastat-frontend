@@ -1,6 +1,6 @@
 # Kopiopastat.org
 
-Kopiopastat.org is a Finnish copypasta wiki website built with Next.js for the frontend and a separate backend API (assumed to be running on `http://127.0.0.1:8080`). It allows users to browse, search, create, edit, and manage copypastas (Finnish internet memes and text snippets), with features like image uploads, history tracking, recent edits, and user authentication for admin actions.
+Kopiopastat.org is a Finnish copypasta wiki website built with Next.js for the frontend and a separate backend API (assumed to be running on `https://kopiopastat.org/api`). It allows users to browse, search, create, edit, and manage copypastas (Finnish internet memes and text snippets), with features like image uploads, history tracking, recent edits, and user authentication for admin actions.
 
 The site is fully localized in Finnish, with a responsive design supporting light and dark themes. It includes infinite scrolling on mobile for browse and recent edits pages, and various UI enhancements like image expansion, copy-to-clipboard functionality, and confirmation dialogs for destructive actions.
 
@@ -21,9 +21,9 @@ The site is fully localized in Finnish, with a responsive design supporting ligh
 
 ### Prerequisites
 
-- Node.js (version 18 or higher recommended)
+- Node.js (version 20 or higher recommended)
 - npm or yarn
-- A running backend API server at `http://127.0.0.1:8080` (this project assumes the backend is separate and handles endpoints like `/browse`, `/pasta`, `/edit`, etc.)
+- A running backend API server at `https://kopiopastat.org/api` (this project assumes the backend is separate and handles endpoints like `/browse`, `/pasta`, `/edit`, etc.)
 
 ### Setup
 
@@ -39,7 +39,7 @@ The site is fully localized in Finnish, with a responsive design supporting ligh
    ```
 
 3. **Configure the backend**:
-   - Ensure your backend is running on `http://127.0.0.1:8080`.
+   - Ensure your backend is running on `https://kopiopastat.org/api`.
    - The frontend proxies image requests to the backend via Next.js rewrites (configured in `next.config.js`).
 
 4. **Run in development mode**:
@@ -87,7 +87,7 @@ The site is fully localized in Finnish, with a responsive design supporting ligh
    - **Vercel/Netlify**: Deploy directly from GitHub. Update `next.config.js` rewrites for image proxying.
    - **Docker**: Create a Dockerfile for containerization.
      ```
-     FROM node:18-alpine
+     FROM node:20-alpine
      WORKDIR /app
      COPY package*.json ./
      RUN npm ci --only=production

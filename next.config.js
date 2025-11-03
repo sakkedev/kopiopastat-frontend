@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: '/images/:path*',
-        destination: 'http://127.0.0.1:8080/images/:path*',
+        destination: 'https://kopiopastat.org/api/images/:path*',
       },
     ]
   },
