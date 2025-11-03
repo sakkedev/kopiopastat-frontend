@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: '/images/:path*',
-        destination: 'https://kopiopastat.org/api/images/:path*',
+        destination: process.env.NODE_ENV === 'development' ? 'http://localhost:8080/images/:path*' : 'https://kopiopastat.org/api/images/:path*',
       },
     ]
   },

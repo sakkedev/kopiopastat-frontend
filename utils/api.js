@@ -1,4 +1,4 @@
-const API_BASE = 'https://kopiopastat.org/api'
+const API_BASE = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://kopiopastat.org/api'
 export { API_BASE }
 import { getToken, clearToken } from './auth'
 

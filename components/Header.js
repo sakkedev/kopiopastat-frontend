@@ -6,6 +6,7 @@ import { postLogout } from '../utils/api'
 import { isLoggedIn } from '../utils/auth'
 import { translations } from '../utils/translations'
 import { MdMenuBook, MdHistory, MdShuffle, MdSearch, MdDownload, MdAdd, MdWbSunny, MdBrightness2, MdLogin, MdLogout } from 'react-icons/md'
+import { API_BASE } from '../utils/api'
 
 export default function Header() {
   const router = useRouter()
@@ -55,7 +56,7 @@ export default function Header() {
           <Link href="/recent/1" title={translations.recentEdits} className="glyph"><MdHistory size={24} color="currentColor" /></Link>
           <button onClick={handleRandom} title={translations.random} className="glyph"><MdShuffle size={24} color="currentColor" /></button>
           <Link href="/search" title={translations.search} className="glyph"><MdSearch size={24} color="currentColor" /></Link>
-          <a href="https://kopiopastat.org/api/download_backup" download title={translations.downloadBackup} className="glyph"><MdDownload size={24} color="currentColor" /></a>
+          <a href={`${API_BASE}/download_backup`} download title={translations.downloadBackup} className="glyph"><MdDownload size={24} color="currentColor" /></a>
           {loggedIn ? (
             <button onClick={handleLogout} title={translations.logoutTitle} className="glyph"><MdLogout size={24} color="currentColor" /></button>
           ) : (

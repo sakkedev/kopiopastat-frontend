@@ -1,6 +1,6 @@
 # Kopiopastat.org
 
-Kopiopastat.org is a Finnish copypasta wiki website built with Next.js for the frontend and a separate backend API (assumed to be running on `https://kopiopastat.org/api`). It allows users to browse, search, create, edit, and manage copypastas (Finnish internet memes and text snippets), with features like image uploads, history tracking, recent edits, and user authentication for admin actions.
+Kopiopastat.org is a Finnish copypasta wiki website built with Next.js for the frontend and a separate backend API (assumed to be running on `http://localhost:8080` in development or `https://kopiopastat.org/api` in production). It allows users to browse, search, create, edit, and manage copypastas (Finnish internet memes and text snippets), with features like image uploads, history tracking, recent edits, and user authentication for admin actions.
 
 The site is fully localized in Finnish, with a responsive design supporting light and dark themes. It includes infinite scrolling on mobile for browse and recent edits pages, and various UI enhancements like image expansion, copy-to-clipboard functionality, and confirmation dialogs for destructive actions.
 
@@ -23,7 +23,7 @@ The site is fully localized in Finnish, with a responsive design supporting ligh
 
 - Node.js (version 20 or higher recommended)
 - npm or yarn
-- A running backend API server at `https://kopiopastat.org/api` (this project assumes the backend is separate and handles endpoints like `/browse`, `/pasta`, `/edit`, etc.)
+- A running backend API server at `http://localhost:8080` (this project assumes the backend is separate and handles endpoints like `/browse`, `/pasta`, `/edit`, etc.)
 
 ### Setup
 
@@ -39,7 +39,7 @@ The site is fully localized in Finnish, with a responsive design supporting ligh
    ```
 
 3. **Configure the backend**:
-   - Ensure your backend is running on `https://kopiopastat.org/api`.
+   - Ensure your backend is running on `http://localhost:8080`.
    - The frontend proxies image requests to the backend via Next.js rewrites (configured in `next.config.js`).
 
 4. **Run in development mode**:
