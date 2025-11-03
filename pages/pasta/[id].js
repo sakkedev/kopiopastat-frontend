@@ -117,7 +117,7 @@ export default function Entry() {
           }
         }, 'image/png')
       }
-      img.src = `${API_BASE}/images/${entry.id}/${entry.filename}`
+      img.src = `${API_BASE}/api/images/${entry.id}/${entry.filename}`
     }
   }
 
