@@ -124,7 +124,7 @@ export default function Entry() {
   const handleDownloadImage = async () => {
     if (entry && entry.filename) {
       try {
-        const response = await fetch(`${API_BASE}/images/${entry.id}/${entry.filename}`)
+        const response = await fetch(`${API_BASE}/api/images/${entry.id}/${entry.filename}`)
         const blob = await response.blob()
         const url = URL.createObjectURL(blob)
         const link = document.createElement('a')
@@ -220,7 +220,7 @@ export default function Entry() {
         <meta property="og:site_name" content={translations.siteTitle} />
         <meta property="og:description" content={entry.content.substring(0, 480) + (entry.content.length > 480 ? '...' : '')} />
         <meta property="og:type" content="article" />
-        {entry.filename && <meta property="og:image" content={`${API_BASE}/images/${entry.id}/${entry.filename}`} />}
+        {entry.filename && <meta property="og:image" content={`${API_BASE}/api/images/${entry.id}/${entry.filename}`} />}
       </Head>
       <Header />
       <div className="button-group-center">
@@ -234,7 +234,7 @@ export default function Entry() {
           <div className="entry-layout">
             {entry.filename && (
               <div className={`entry-image-section ${imageExpanded ? 'expanded' : ''}`}>
-                <img ref={imgRef} src={`/images/${entry.id}/${entry.filename}`} alt="Entry image" className={`entry-image ${imageExpanded ? 'expanded' : ''}`} onClick={handleImageClick} />
+                <img ref={imgRef} src={`/api/images/${entry.id}/${entry.filename}`} alt="Entry image" className={`entry-image ${imageExpanded ? 'expanded' : ''}`} onClick={handleImageClick} />
               </div>
             )}
             <div className="entry-text-section">

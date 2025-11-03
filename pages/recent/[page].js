@@ -143,7 +143,7 @@ export default function Recent() {
                     <Link href={`/pasta/${entry.id}`} onClick={() => sessionStorage.setItem('browseScroll', window.scrollY)} className="list-link">
                       <div className="list-title">{entry.title} ({entry.type === 'edit' ? translations.edited : entry.type === 'image_added' ? translations.imageAdded : translations.created})</div>
                       {entry.type === 'image_added' ? (
-                        <img src={`/images/${entry.id}/${entry.content}`} alt="Added image" style={{ maxWidth: '100px', maxHeight: '100px', marginTop: '4px' }} />
+                        <img src={`/api/images/${entry.id}/${entry.content}`} alt="Added image" style={{ maxWidth: '100px', maxHeight: '100px', marginTop: '4px' }} />
                       ) : (
                         <p className="list-content">{entry.content}</p>
                       )}
