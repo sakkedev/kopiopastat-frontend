@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
 import Header from '../../components/Header'
-import { fetchRecent, postDelete, postDeleteImage } from '../../utils/api'
+import { fetchRecent, postDelete, postDeleteImage, API_BASE } from '../../utils/api'
 import { isLoggedIn } from '../../utils/auth'
 import { translations } from '../../utils/translations'
 import { MdDelete } from 'react-icons/md'
@@ -143,7 +143,7 @@ export default function Recent() {
                     <Link href={`/pasta/${entry.id}`} onClick={() => sessionStorage.setItem('browseScroll', window.scrollY)} className="list-link">
                       <div className="list-title">{entry.title} ({entry.type === 'edit' ? translations.edited : entry.type === 'image_added' ? translations.imageAdded : translations.created})</div>
                       {entry.type === 'image_added' ? (
-                        <img src={`/api/images/${entry.id}/${entry.content}`} alt="Added image" style={{ maxWidth: '100px', maxHeight: '100px', marginTop: '4px' }} />
+                        <img src={`${API_BASE}/images/${entry.id}/${entry.content}`} alt="Added image" style={{ maxWidth: '100px', maxHeight: '100px', marginTop: '4px' }} />
                       ) : (
                         <p className="list-content">{entry.content}</p>
                       )}

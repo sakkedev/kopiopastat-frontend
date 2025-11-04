@@ -8,23 +8,34 @@ import { isLoggedIn } from '../../utils/auth'
 import { translations } from '../../utils/translations'
 import { MdChevronLeft, MdShuffle, MdChevronRight, MdContentCopy, MdEdit, MdDelete, MdDownload, MdImage } from 'react-icons/md'
 
-export default function Entry() {
+const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://kopiopastat.org'
+
+export async function getServerSideProps({ params }) {
+  const { id } = params
+  try {
+    const res = await fetch(`${BASE_URL}/pasta?id=${id}`)
+    if (!res.ok) {
+      return { notFound: true }
+    }
+    const entry = await res.json()
+    return { props: { entry } }
+  } catch (error) {
+    return { notFound: true }
+  }
+}
+
+export default function Entry({ entry }) {
   const router = useRouter()
   const { id } = router.query
-  const [entry, setEntry] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
   const [imageCopied, setImageCopied] = useState(false)
   const [imageExpanded, setImageExpanded] = useState(false)
+  const [error, setError] = useState('')
   const loadedId = useRef(null)
   const imgRef = useRef(null)
 
   useEffect(() => {
-    if (id && id !== loadedId.current) {
-      loadedId.current = id
-      loadEntry()
-    }
+    loadedId.current = id
   }, [id])
 
   useEffect(() => {
@@ -40,18 +51,6 @@ export default function Entry() {
       return () => clearTimeout(timer)
     }
   }, [imageCopied])
-
-  const loadEntry = async () => {
-    setError('')
-    try {
-      const data = await fetchEntry(id)
-      setEntry(data)
-    } catch (error) {
-      console.error(error)
-      setError(error.message)
-    }
-    setLoading(false)
-  }
 
   const handlePrev = async () => {
     if (entry && entry.order_index > 0) {
@@ -117,14 +116,14 @@ export default function Entry() {
           }
         }, 'image/png')
       }
-      img.src = `${API_BASE}/images/${entry.id}/${entry.filename}`
+      img.src = `${BASE_URL}/images/${entry.id}/${entry.filename}`
     }
   }
 
   const handleDownloadImage = async () => {
     if (entry && entry.filename) {
       try {
-        const response = await fetch(`${API_BASE}/images/${entry.id}/${entry.filename}`)
+        const response = await fetch(`${BASE_URL}/images/${entry.id}/${entry.filename}`)
         const blob = await response.blob()
         const url = URL.createObjectURL(blob)
         const link = document.createElement('a')
@@ -170,24 +169,6 @@ export default function Entry() {
     });
   };
 
-  if (loading) return (
-    <div>
-      <Head>
-        <title>{`${translations.siteTitle} - ${translations.metaLoadingEntry}`}</title>
-        <meta name="description" content={translations.metaLoadingEntry} />
-        <meta name="robots" content="noindex, nofollow" />
-      </Head>
-      <Header />
-      <div className="container">
-        <div className="loading">
-          <div className="loading-center">
-            <div className="spinner"></div>
-            <p className="loading-text">{translations.loading}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
   if (!entry) return (
     <div>
       <Head>
@@ -220,11 +201,11 @@ export default function Entry() {
         <meta property="og:site_name" content={translations.siteTitle} />
         <meta property="og:description" content={entry.content.substring(0, 480) + (entry.content.length > 480 ? '...' : '')} />
         <meta property="og:type" content="article" />
-        {entry.filename && <meta property="og:image" content={`${API_BASE}/images/${entry.id}/${entry.filename}`} />}
+        {entry.filename && <meta property="og:image" content={`${BASE_URL}/images/${entry.id}/${entry.filename}`} />}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={entry.title} />
         <meta name="twitter:description" content={entry.content.substring(0, 200) + (entry.content.length > 200 ? '...' : '')} />
-        {entry.filename && <meta name="twitter:image" content={`${API_BASE}/images/${entry.id}/${entry.filename}`} />}
+        {entry.filename && <meta name="twitter:image" content={`${BASE_URL}/images/${entry.id}/${entry.filename}`} />}
       </Head>
       <Header />
       <div className="button-group-center">
@@ -238,7 +219,7 @@ export default function Entry() {
           <div className="entry-layout">
             {entry.filename && (
               <div className={`entry-image-section ${imageExpanded ? 'expanded' : ''}`}>
-                <img ref={imgRef} src={`/api/images/${entry.id}/${entry.filename}`} alt="Entry image" className={`entry-image ${imageExpanded ? 'expanded' : ''}`} onClick={handleImageClick} />
+                <img ref={imgRef} src={`${BASE_URL}/images/${entry.id}/${entry.filename}`} alt="Entry image" className={`entry-image ${imageExpanded ? 'expanded' : ''}`} onClick={handleImageClick} />
               </div>
             )}
             <div className="entry-text-section">
