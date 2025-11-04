@@ -31,8 +31,13 @@ export default function Entry({ entry }) {
   const [imageCopied, setImageCopied] = useState(false)
   const [imageExpanded, setImageExpanded] = useState(false)
   const [error, setError] = useState('')
+  const [loggedIn, setLoggedIn] = useState(false)
   const loadedId = useRef(null)
   const imgRef = useRef(null)
+
+  useEffect(() => {
+    setLoggedIn(isLoggedIn())
+  }, [])
 
   useEffect(() => {
     loadedId.current = id
@@ -138,7 +143,7 @@ export default function Entry({ entry }) {
   }
 
   const handleDelete = async () => {
-    if (!entry || !isLoggedIn()) return
+    if (!entry || !loggedIn) return
     const confirmed = window.confirm(translations.confirmDeleteArticle)
     if (!confirmed) return
     try {
@@ -215,7 +220,14 @@ export default function Entry({ entry }) {
       </div>
       <div className="container">
         <div className="content-bg content-box">
-          <h2 className="entry-title">{entry.title}</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2 className="entry-title">{entry.title}</h2>
+            {(loggedIn || !entry.filename) && (
+              <Link href={`/edit/${id}`}>
+                <button className="button glyph" title={translations.edit} style={{ padding: '8px 12px' }}><MdEdit size={16} color="currentColor" /></button>
+              </Link>
+            )}
+          </div>
           <div className="entry-layout">
             {entry.filename && (
               <div className={`entry-image-section ${imageExpanded ? 'expanded' : ''}`}>
@@ -229,10 +241,7 @@ export default function Entry({ entry }) {
             </div>
             <div className="button-group-small">
               <button className="button glyph" title={translations.copyText} onClick={handleCopy}><MdContentCopy size={18} color="currentColor" /></button>
-              <Link href={`/edit/${id}`}>
-                <button className="button glyph" title={translations.edit}><MdEdit size={18} color="currentColor" /></button>
-              </Link>
-              {isLoggedIn() && (
+              {loggedIn && (
                 <button className="button glyph" title={translations.delete} onClick={handleDelete}><MdDelete size={18} color="currentColor" /></button>
               )}
               {entry.filename && (

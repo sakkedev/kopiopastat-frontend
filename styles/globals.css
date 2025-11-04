@@ -211,6 +211,11 @@ a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  overflow-wrap: break-word;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
 }
 
 .list-timestamp {
@@ -235,6 +240,7 @@ a:hover {
 .entry-content {
   margin-bottom: 16px;
   line-height: 1.5;
+  overflow-wrap: break-word;
 }
 
 .entry-timestamp {
@@ -311,6 +317,7 @@ a:hover {
 
 .history-content {
   line-height: 1.5;
+  overflow-wrap: break-word;
 }
 
 .search-loading {
@@ -345,14 +352,17 @@ a:hover {
 
 .default-text {
   color: #800000;
+  overflow-wrap: break-word;
 }
 
 .quote-text {
   color: #789922;
+  overflow-wrap: break-word;
 }
 
 .response-text {
   color: #226199;
+  overflow-wrap: break-word;
 }
 
 .glyph {
@@ -628,6 +638,7 @@ a:hover {
   .entry-content {
     font-size: 16px;
     line-height: 1.4;
+    overflow-wrap: break-word;
   }
 
   .entry-timestamp,
@@ -649,10 +660,7 @@ a:hover {
 
   .list-content {
     white-space: normal;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    display: -webkit-box;
-    overflow: hidden;
+    overflow-wrap: break-word;
   }
 
   .list-item {

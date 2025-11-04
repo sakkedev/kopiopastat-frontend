@@ -26,7 +26,8 @@ export async function fetchBrowse(start, end) {
     const message = getErrorMessage(errorData, res)
     throw new Error(message)
   }
-  return res.json()
+  const data = await res.json()
+  return data
 }
 
 export async function fetchEntry(id) {
@@ -79,11 +80,23 @@ export async function fetchRecent(start, end) {
   return res.json()
 }
 
-export async function postEdit(id, content) {
+export async function fetchDataVersion() {
+  const res = await fetch(`${API_BASE}/data_version`)
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}))
+    const message = getErrorMessage(errorData, res)
+    throw new Error(message)
+  }
+  return res.json()
+}
+
+export async function postEdit(id, content, title = null) {
+  const body = { id, content }
+  if (title !== null) body.title = title
   const res = await fetch(`${API_BASE}/edit`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
-    body: JSON.stringify({ id, content })
+    body: JSON.stringify(body)
   })
   if (res.status === 401) {
     clearToken()

@@ -60,7 +60,7 @@ export default function Header() {
           {loggedIn ? (
             <button onClick={handleLogout} title={translations.logoutTitle} className="glyph"><MdLogout size={24} color="currentColor" /></button>
           ) : (
-            <Link href="/login" title={translations.login} className="glyph"><MdLogin size={18} color="currentColor" /></Link>
+            <Link href="/login" title={translations.login} className="glyph"><MdLogin size={24} color="currentColor" /></Link>
           )}
           <button onClick={toggleTheme} title={isDark ? translations.switchToLight : translations.switchToDark} className="glyph">
             {isDark ? <MdWbSunny size={24} color="currentColor" /> : <MdBrightness2 size={24} color="currentColor" />}

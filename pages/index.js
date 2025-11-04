@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
 import Header from '../components/Header'
-import { fetchBrowse } from '../utils/api'
+import { fetchBrowse, fetchDataVersion } from '../utils/api'
 import { translations } from '../utils/translations'
 
 export default function Home() {
@@ -35,13 +35,13 @@ export default function Home() {
   useEffect(() => {
     if (!hasLoaded.current) {
       hasLoaded.current = true
-      loadEntries(0, 100)
+      loadFromCache()
     }
   }, [])
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         if (!loading && !isLoadingMore && entries.length === currentEnd) {
           loadMore()
         }
@@ -51,17 +51,39 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [loading, isLoadingMore, entries, currentEnd])
 
-  const loadEntries = async (newStart, end) => {
-    setLoading(true)
-    setError('')
+  const loadFromCache = async () => {
+    const cachedContents = localStorage.getItem('frontpageEntries')
+    const cachedVersion = localStorage.getItem('dataVersion')
+    const isMobileNow = window.innerWidth < 768
+    const end = isMobileNow ? 200 : 100
+    if (cachedContents) {
+      const parsed = JSON.parse(cachedContents)
+      setEntries(parsed)
+      setCurrentEnd(parsed.length)
+    }
     try {
-      const data = await fetchBrowse(newStart, end)
-      setEntries(data)
-      setStart(newStart)
-      setCurrentEnd(end)
+      const versionData = await fetchDataVersion()
+      const currentVersion = versionData.version
+      if (!cachedVersion || parseInt(cachedVersion) !== currentVersion) {
+        const data = await fetchBrowse(0, end)
+        setEntries(data.contents)
+        localStorage.setItem('frontpageEntries', JSON.stringify(data.contents))
+        localStorage.setItem('dataVersion', currentVersion.toString())
+        setCurrentEnd(end)
+      } else {
+        if (!cachedContents) {
+          const data = await fetchBrowse(0, end)
+          setEntries(data.contents)
+          localStorage.setItem('frontpageEntries', JSON.stringify(data.contents))
+          setCurrentEnd(end)
+        }
+      }
     } catch (error) {
       console.error(error)
-      setError(error.message)
+      if (!cachedContents) {
+        setError(error.message)
+      }
+      setCurrentEnd(end)
     }
     setLoading(false)
   }
@@ -72,8 +94,10 @@ export default function Home() {
     setIsLoadingMore(true)
     try {
       const data = await fetchBrowse(newStart, newEnd)
-      setEntries(prev => [...prev, ...data])
+      const newEntries = [...entries, ...data.contents]
+      setEntries(newEntries)
       setCurrentEnd(newEnd)
+      localStorage.setItem('frontpageEntries', JSON.stringify(newEntries))
     } catch (error) {
       console.error(error)
     }

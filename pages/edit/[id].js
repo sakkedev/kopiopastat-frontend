@@ -11,11 +11,13 @@ export default function Edit() {
   const router = useRouter()
   const { id } = router.query
   const [entry, setEntry] = useState(null)
+  const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const fileInputRef = useRef(null)
+  const loggedIn = isLoggedIn()
 
   useEffect(() => {
     if (id) {
@@ -29,6 +31,7 @@ export default function Edit() {
     try {
       const data = await fetchEntry(id)
       setEntry(data)
+      setTitle(data.title)
       setContent(data.content)
     } catch (error) {
       console.error(error)
@@ -57,7 +60,9 @@ export default function Edit() {
     e.preventDefault()
     setError('')
     try {
-      await postEdit(id, content)
+      if (loggedIn) {
+        await postEdit(id, content, title)
+      }
       if (file) {
         await postUploadImage(id, file.name, file)
       }
@@ -81,6 +86,15 @@ export default function Edit() {
       setError(error.message)
     }
   }
+
+  const renderContent = (content) => {
+    return content.split('\n').map((line, index) => {
+      let className = 'default-text';
+      if (line.startsWith('>')) className = 'quote-text';
+      else if (line.startsWith('<')) className = 'response-text';
+      return <div key={index} className={className}>{line || '\u00A0'}</div>;
+    });
+  };
 
   if (loading) return (
     <div>
@@ -132,15 +146,33 @@ export default function Edit() {
           <h1 className="title">{entry.title}</h1>
         </div>
         <form onSubmit={handleSubmit} className="content-bg form">
+          {loggedIn && (
+            <div className="form-group">
+              <label className="label">{translations.titleLabel}</label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="input"
+              />
+            </div>
+          )}
           <div className="form-group">
             <label className="label">{translations.contentLabel}</label>
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              rows={10}
-              className="textarea"
-              onPaste={handlePaste}
-            />
+            {loggedIn ? (
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                rows={10}
+                readOnly={!loggedIn}
+                className="textarea"
+                onPaste={handlePaste}
+              />
+            ) : (
+              <div className="entry-content" style={{ margin: 0 }}>
+                {renderContent(content)}
+              </div>
+            )}
           </div>
           <div className="form-group">
             {!entry.filename && (
@@ -160,12 +192,12 @@ export default function Edit() {
               {file && (
                 <button type="button" onClick={() => { setFile(null); fileInputRef.current.value = ''; }} className="button button-small">{translations.clear}</button>
               )}
-              {entry.filename && isLoggedIn() && (
+              {entry.filename && loggedIn && (
                 <button type="button" onClick={handleDeleteImage} className="button button-small" style={{ marginLeft: '8px' }}>{translations.deleteImage}</button>
               )}
             </div>
           </div>
-          <div className="button-group">
+          <div className="button-group" style={{ flexDirection: 'row' }}>
             <Link href={`/pasta/${id}`}><button type="button" className="button">{translations.cancel}</button></Link>
             <button type="submit" className="button">{translations.save}</button>
           </div>
