@@ -41,7 +41,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
         if (!loading && !isLoadingMore && entries.length === currentEnd) {
           loadMore()
         }
