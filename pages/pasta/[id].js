@@ -13,7 +13,7 @@ const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080
 export async function getServerSideProps({ params }) {
   const { id } = params
   try {
-    const res = await fetch(`${BASE_URL}/pasta?id=${id}`)
+    const res = await fetch(`${API_BASE}/pasta?id=${id}`)
     if (!res.ok) {
       return { notFound: true }
     }
