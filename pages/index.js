@@ -54,8 +54,7 @@ export default function Home() {
   const loadFromCache = async () => {
     const cachedContents = localStorage.getItem('frontpageEntries')
     const cachedVersion = localStorage.getItem('dataVersion')
-    const isMobileNow = window.innerWidth < 768
-    const end = isMobileNow ? 200 : 100
+    const end = 100
     if (cachedContents) {
       const parsed = JSON.parse(cachedContents)
       setEntries(parsed)
