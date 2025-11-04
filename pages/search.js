@@ -50,9 +50,6 @@ export default function Search() {
       </Head>
       <Header />
       <div className="container">
-        <div className="center">
-          <h1 className="title">{translations.search}</h1>
-        </div>
         <form className="content-bg content-box">
           <div className="form-group">
             <input
