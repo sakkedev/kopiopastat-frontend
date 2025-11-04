@@ -121,14 +121,14 @@ export default function Entry({ entry }) {
           }
         }, 'image/png')
       }
-      img.src = `${BASE_URL}/images/${entry.id}/${entry.filename}`
+      img.src = `${API_BASE}/images/${entry.id}/${entry.filename}`
     }
   }
 
   const handleDownloadImage = async () => {
     if (entry && entry.filename) {
       try {
-        const response = await fetch(`${BASE_URL}/images/${entry.id}/${entry.filename}`)
+        const response = await fetch(`${API_BASE}/images/${entry.id}/${entry.filename}`)
         const blob = await response.blob()
         const url = URL.createObjectURL(blob)
         const link = document.createElement('a')
@@ -206,11 +206,11 @@ export default function Entry({ entry }) {
         <meta property="og:site_name" content={translations.siteTitle} />
         <meta property="og:description" content={entry.content.substring(0, 480) + (entry.content.length > 480 ? '...' : '')} />
         <meta property="og:type" content="article" />
-        {entry.filename && <meta property="og:image" content={`${BASE_URL}/images/${entry.id}/${entry.filename}`} />}
+        {entry.filename && <meta property="og:image" content={`${API_BASE}/images/${entry.id}/${entry.filename}`} />}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={entry.title} />
         <meta name="twitter:description" content={entry.content.substring(0, 200) + (entry.content.length > 200 ? '...' : '')} />
-        {entry.filename && <meta name="twitter:image" content={`${BASE_URL}/images/${entry.id}/${entry.filename}`} />}
+        {entry.filename && <meta name="twitter:image" content={`${API_BASE}/images/${entry.id}/${entry.filename}`} />}
       </Head>
       <Header />
       <div className="button-group-center">
@@ -231,7 +231,7 @@ export default function Entry({ entry }) {
           <div className="entry-layout">
             {entry.filename && (
               <div className={`entry-image-section ${imageExpanded ? 'expanded' : ''}`}>
-                <img ref={imgRef} src={`${BASE_URL}/images/${entry.id}/${entry.filename}`} alt="Entry image" className={`entry-image ${imageExpanded ? 'expanded' : ''}`} onClick={handleImageClick} />
+                <img ref={imgRef} src={`${API_BASE}/images/${entry.id}/${entry.filename}`} alt="Entry image" className={`entry-image ${imageExpanded ? 'expanded' : ''}`} onClick={handleImageClick} />
               </div>
             )}
             <div className="entry-text-section">
