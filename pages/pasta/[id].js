@@ -212,7 +212,7 @@ export default function Entry({ entry }) {
         <meta name="twitter:description" content={entry.content.substring(0, 200) + (entry.content.length > 200 ? '...' : '')} />
         {entry.filename && <meta name="twitter:image" content={`${API_BASE}/images/${entry.id}/${entry.filename}`} />}
       </Head>
-      <Header />
+      <Header showEdit={(loggedIn || !entry.filename)} editHref={`/edit/${id}`} />
       <div className="button-group-center">
         <button className="button glyph" onClick={handlePrev} disabled={entry.order_index === 0}><MdChevronLeft size={24} color="currentColor" /></button>
         <button className="button glyph" onClick={handleRandom}><MdShuffle size={24} color="currentColor" /></button>
@@ -222,11 +222,6 @@ export default function Entry({ entry }) {
         <div className="content-bg content-box">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h2 className="entry-title">{entry.title}</h2>
-            {(loggedIn || !entry.filename) && (
-              <Link href={`/edit/${id}`}>
-                <button className="button glyph" title={translations.edit} style={{ padding: '8px 12px' }}><MdEdit size={16} color="currentColor" /></button>
-              </Link>
-            )}
           </div>
           <div className="entry-layout">
             {entry.filename && (

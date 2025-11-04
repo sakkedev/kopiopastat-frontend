@@ -5,10 +5,10 @@ import { fetchRandom } from '../utils/api'
 import { postLogout } from '../utils/api'
 import { isLoggedIn } from '../utils/auth'
 import { translations } from '../utils/translations'
-import { MdMenuBook, MdHistory, MdShuffle, MdSearch, MdDownload, MdAdd, MdWbSunny, MdBrightness2, MdLogin, MdLogout } from 'react-icons/md'
+import { MdMenuBook, MdHistory, MdShuffle, MdSearch, MdDownload, MdAdd, MdWbSunny, MdBrightness2, MdLogin, MdLogout, MdEdit } from 'react-icons/md'
 import { API_BASE } from '../utils/api'
 
-export default function Header() {
+export default function Header({ showEdit = false, editHref = '' }) {
   const router = useRouter()
   const [isDark, setIsDark] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false)
@@ -52,6 +52,7 @@ export default function Header() {
       <div className="header-container">
         <Link href="/" className="header-title">{translations.siteTitle}</Link>
         <nav className="nav">
+          {showEdit && <Link href={editHref} title={translations.edit} className="glyph"><MdEdit size={24} color="currentColor" /></Link>}
           <Link href="/new" title={translations.new} className="glyph"><MdAdd size={24} color="currentColor" /></Link>
           <Link href="/recent/1" title={translations.recentEdits} className="glyph"><MdHistory size={24} color="currentColor" /></Link>
           <button onClick={handleRandom} title={translations.random} className="glyph"><MdShuffle size={24} color="currentColor" /></button>
