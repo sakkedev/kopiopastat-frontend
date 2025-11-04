@@ -350,6 +350,11 @@ a:hover {
   font-weight: bold;
 }
 
+.notification-error {
+  background-color: #DD0000;
+  color: #ffffff;
+}
+
 .default-text {
   color: #800000;
   overflow-wrap: break-word;
@@ -512,6 +517,11 @@ a:hover {
 .dark .notification {
   background-color: #333333;
   color: #d4d4d4;
+}
+
+.dark .notification-error {
+  background-color: #ff6b6b;
+  color: #ffffff;
 }
 
 .dark .default-text {

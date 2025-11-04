@@ -7,6 +7,11 @@ function getAuthHeaders() {
   return token ? { 'Authorization': `Bearer ${token}` } : {}
 }
 
+function getCaptchaHeaders() {
+  const captchaToken = typeof window !== 'undefined' ? localStorage.getItem('captcha_token') : null
+  return captchaToken ? { 'X-Captcha': captchaToken } : {}
+}
+
 function getErrorMessage(errorData, res) {
   if (errorData.detail) {
     if (Array.isArray(errorData.detail)) {
@@ -90,6 +95,49 @@ export async function fetchDataVersion() {
   return res.json()
 }
 
+export async function fetchCaptchaQuestion() {
+  const res = await fetch(`${API_BASE}/captcha_question`)
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}))
+    const message = getErrorMessage(errorData, res)
+    throw new Error(message)
+  }
+  return res.json()
+}
+
+export async function postCaptchaAnswer(answer, index) {
+  const res = await fetch(`${API_BASE}/captcha_answer`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ answer, index })
+  })
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}))
+    const message = getErrorMessage(errorData, res)
+    throw new Error(message)
+  }
+  const data = await res.json()
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('captcha_token', data.token)
+  }
+  return data
+}
+
+export async function fetchVerifyCaptcha() {
+  const res = await fetch(`${API_BASE}/verify_captcha`, {
+    headers: getCaptchaHeaders()
+  })
+  if (!res.ok) {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('captcha_token')
+    }
+    const errorData = await res.json().catch(() => ({}))
+    const message = getErrorMessage(errorData, res)
+    throw new Error(message)
+  }
+  return res.json()
+}
+
 export async function postEdit(id, content, title = null) {
   const body = { id, content }
   if (title !== null) body.title = title
@@ -118,9 +166,10 @@ export async function postNew(title, content, file = null) {
     formData.append('filename', file.name)
     formData.append('file', file)
   }
+  const headers = { ...getAuthHeaders(), ...getCaptchaHeaders() }
   const res = await fetch(`${API_BASE}/new`, {
     method: 'POST',
-    headers: getAuthHeaders(),
+    headers,
     body: formData
   })
   if (res.status === 401) {
@@ -198,9 +247,10 @@ export async function postUploadImage(id, filename, file) {
   formData.append('id', id)
   formData.append('filename', filename)
   formData.append('file', file)
+  const headers = { ...getAuthHeaders(), ...getCaptchaHeaders() }
   const res = await fetch(`${API_BASE}/upload_image`, {
     method: 'POST',
-    headers: getAuthHeaders(),
+    headers,
     body: formData
   })
   if (res.status === 401) {

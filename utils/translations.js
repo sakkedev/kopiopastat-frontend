@@ -69,5 +69,7 @@ export const translations = {
   confirmDeleteArticle: "Oletko varma, että haluat poistaa tämän artikkelin?",
   noPreviousEntry: "Ei edellistä merkintää",
   noNextEntry: "Ei seuraavaa merkintää",
-  randomLoadFailed: "Satunnaisen merkinnän lataaminen epäonnistui"
+  randomLoadFailed: "Satunnaisen merkinnän lataaminen epäonnistui",
+  incorrectCaptcha: "Väärä vastaus",
+  verifyCaptcha: "Vahvista CAPTCHA"
 }

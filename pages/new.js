@@ -1,8 +1,9 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Header from '../components/Header'
-import { postNew } from '../utils/api'
+import { postNew, fetchCaptchaQuestion, postCaptchaAnswer, fetchVerifyCaptcha } from '../utils/api'
+import { isLoggedIn } from '../utils/auth'
 import { translations } from '../utils/translations'
 
 export default function New() {
@@ -11,7 +12,13 @@ export default function New() {
   const [content, setContent] = useState('')
   const [file, setFile] = useState(null)
   const [error, setError] = useState('')
+  const [captchaQuestion, setCaptchaQuestion] = useState('')
+  const [captchaIndex, setCaptchaIndex] = useState(null)
+  const [captchaAnswer, setCaptchaAnswer] = useState('')
+  const [captchaSolved, setCaptchaSolved] = useState(false)
+  const [captchaError, setCaptchaError] = useState('')
   const fileInputRef = useRef(null)
+  const loggedIn = isLoggedIn()
 
   const handlePaste = (e) => {
     const items = e.clipboardData.items
@@ -29,8 +36,36 @@ export default function New() {
     }
   }
 
+  const loadCaptcha = async () => {
+    try {
+      const data = await fetchCaptchaQuestion()
+      setCaptchaQuestion(data.question)
+      setCaptchaIndex(data.index)
+    } catch (error) {
+      console.error(error)
+      setError(error.message)
+    }
+  }
+
+  const handleCaptchaSubmit = async (e) => {
+    e.preventDefault()
+    setCaptchaError('')
+    try {
+      await postCaptchaAnswer(captchaAnswer, captchaIndex)
+      setCaptchaSolved(true)
+    } catch (error) {
+      console.error(error)
+      setCaptchaError(translations.incorrectCaptcha)
+      loadCaptcha() // Reload captcha on failure
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!loggedIn && !captchaSolved) {
+      setError('Please solve the CAPTCHA first.')
+      return
+    }
     setError('')
     try {
       const data = await postNew(title, content, file)
@@ -40,6 +75,27 @@ export default function New() {
       setError(error.message)
     }
   }
+
+  useEffect(() => {
+    if (!loggedIn) {
+      const captchaToken = localStorage.getItem('captcha_token')
+      if (captchaToken) {
+        fetchVerifyCaptcha().then(data => {
+          if (data.valid) {
+            setCaptchaSolved(true)
+          } else {
+            loadCaptcha()
+          }
+        }).catch(() => {
+          loadCaptcha()
+        })
+      } else {
+        loadCaptcha()
+      }
+    } else {
+      setCaptchaSolved(true)
+    }
+  }, [])
 
   return (
     <div>
@@ -91,7 +147,25 @@ export default function New() {
               )}
             </div>
           </div>
-          <button type="submit" className="button button-full">{translations.create}</button>
+          {!loggedIn && !captchaSolved && (
+            <div className="form-group" style={{ position: 'relative' }}>
+              <label className="label">CAPTCHA: {captchaQuestion}</label>
+              <input
+                type="text"
+                value={captchaAnswer}
+                onChange={(e) => setCaptchaAnswer(e.target.value)}
+                required
+                className="input"
+              />
+              <button type="button" onClick={handleCaptchaSubmit} className="button button-small" style={{ marginTop: '8px' }}>{translations.verifyCaptcha}</button>
+              {captchaError && (
+                <div className="notification notification-error" style={{ position: 'absolute', top: '-50px', left: '0', width: '100%' }}>
+                  {captchaError}
+                </div>
+              )}
+            </div>
+          )}
+          <button type="submit" className="button button-full" disabled={!loggedIn && !captchaSolved}>{translations.create}</button>
         </form>
         {error && <p className="error">{error}</p>}
       </div>
