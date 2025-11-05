@@ -124,7 +124,6 @@ export default function Home() {
       <Header />
       <div className="container">
         <div className="center">
-          <h1 className="title">{translations.browse} kopiopastoja</h1>
           <p className="subtitle">{translations.subtitle}</p>
         </div>
         {error && <p className="error">{error}</p>}
