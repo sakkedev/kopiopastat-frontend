@@ -66,7 +66,8 @@ export default function Search() {
           <ul className="list">
             {results.map(result => (
               <li key={result.id} className="list-item">
-                <Link href={`/pasta/${result.id}`} className="list-link list-title">{result.title}
+                <Link href={`/pasta/${result.id}`} className="list-link">
+                <div className="list-title">{result.title}</div>
                 <p className="list-content">{result.content.substring(0, 128)}{result.content.length > 128 ? '...' : ''}</p></Link>
 
               </li>

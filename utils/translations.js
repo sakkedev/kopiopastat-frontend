@@ -71,5 +71,10 @@ export const translations = {
   noNextEntry: "Ei seuraavaa merkintää",
   randomLoadFailed: "Satunnaisen merkinnän lataaminen epäonnistui",
   incorrectCaptcha: "Väärä vastaus",
-  verifyCaptcha: "Vahvista CAPTCHA"
+  verifyCaptcha: "Vahvista CAPTCHA",
+  theme: "Teema",
+  account: "Tili",
+  sortByPopularity: "Järjestä suosion mukaan",
+  sortByDate: "Järjestä päivämäärän mukaan",
+  sortByAZ: "Järjestä A-Z"
 }

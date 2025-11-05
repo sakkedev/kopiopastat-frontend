@@ -43,6 +43,11 @@ a:hover {
   opacity: 0.5;
 }
 
+.button.active {
+  background-color: #800000;
+  color: #F0E0D6;
+}
+
 .button-small {
   padding: 6px 12px;
   font-size: 12px;
@@ -212,7 +217,7 @@ a:hover {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow-wrap: break-word;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   display: -webkit-box;
   overflow: hidden;
@@ -288,7 +293,7 @@ a:hover {
 }
 
 .form-group {
-  margin-bottom: 24px;
+  margin-bottom: 4px;
 }
 
 .label {
@@ -406,6 +411,11 @@ a:hover {
 
 .dark .button:hover {
   background-color: #777777;
+}
+
+.dark .button.active {
+  background-color: #d4d4d4;
+  color: #191919;
 }
 
 .dark .input {
@@ -571,6 +581,14 @@ a:hover {
   max-height: none;
   width: 100%;
   height: auto;
+}
+
+.button.glyph.active {
+  color: #F0E0D6 !important;
+}
+
+.dark .button.glyph.active {
+  color: #191919 !important;
 }
 
 @media (max-width: 768px) {

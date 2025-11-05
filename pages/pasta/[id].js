@@ -212,7 +212,7 @@ export default function Entry({ entry }) {
         <meta name="twitter:description" content={entry.content.substring(0, 200) + (entry.content.length > 200 ? '...' : '')} />
         {entry.filename && <meta name="twitter:image" content={`${API_BASE}/images/${entry.id}/${entry.filename}`} />}
       </Head>
-      <Header showEdit={(loggedIn || !entry.filename)} editHref={`/edit/${id}`} />
+      <Header showEdit={(loggedIn || !entry.filename)} editHref={`/edit/${id}`} showShuffle={false} />
       <div className="button-group-center">
         <button className="button glyph" onClick={handlePrev} disabled={entry.order_index === 0}><MdChevronLeft size={24} color="currentColor" /></button>
         <button className="button glyph" onClick={handleRandom}><MdShuffle size={24} color="currentColor" /></button>
