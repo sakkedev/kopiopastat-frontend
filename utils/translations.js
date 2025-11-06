@@ -77,6 +77,6 @@ export const translations = {
   sortByPopularity: "Järjestä suosion mukaan",
   sortByDate: "Järjestä päivämäärän mukaan",
   sortByAZ: "Järjestä A-Z",
-  foundInGoogle: "Julkinen kopiopasta",
-  foundInGoogleLabel: "Julkinen kopiopasta"
+  foundInGoogle: "Näkyy etusivulla",
+  foundInGoogleLabel: "Näkyy etusivulla"
 }
