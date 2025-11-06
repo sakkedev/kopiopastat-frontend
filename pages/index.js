@@ -93,7 +93,7 @@ export default function Home() {
     setIsLoadingMore(true)
     try {
       const data = await fetchBrowse(newStart, newEnd)
-      const newEntries = [...entries, ...data.contents]
+      const newEntries = [...entries, ...data.contents.filter(newEntry => !entries.some(existing => existing.id === newEntry.id))]
       setEntries(newEntries)
       setCurrentEnd(newEnd)
       localStorage.setItem('frontpageEntries', JSON.stringify(newEntries))
