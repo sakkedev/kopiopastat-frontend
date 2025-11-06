@@ -77,6 +77,6 @@ export const translations = {
   sortByPopularity: "Järjestä suosion mukaan",
   sortByDate: "Järjestä päivämäärän mukaan",
   sortByAZ: "Järjestä A-Z",
-  foundInGoogle: "Tämä pasta löytyy myös googlesta",
+  foundInGoogle: "Tämä pasta löytyy myös Googlesta (ruksaa jos haluat pastan etusivulle)",
   foundInGoogleLabel: "Löytyy googlesta"
 }

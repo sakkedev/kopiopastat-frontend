@@ -266,24 +266,21 @@ export default function Edit() {
               )}
             </div>
           </div>
-          {!loggedIn && !entry.filename && !captchaSolved && (
-            <div className="form-group" style={{ position: 'relative' }}>
-              <label className="label">CAPTCHA: {captchaQuestion}</label>
-              <input
-                type="text"
-                value={captchaAnswer}
-                onChange={(e) => setCaptchaAnswer(e.target.value)}
-                required
-                className="input"
-              />
-              <button type="button" onClick={handleCaptchaSubmit} className="button button-small" style={{ marginTop: '8px' }}>{translations.verifyCaptcha}</button>
-              {captchaError && (
-                <div className="notification notification-error" style={{ position: 'absolute', top: '-50px', left: '0', width: '100%' }}>
-                  {captchaError}
-                </div>
-              )}
-            </div>
-          )}
+          <div className="form-group" style={{ position: 'relative', display: (!loggedIn && !entry.filename && !captchaSolved) ? 'block' : 'none' }}>
+            <label className="label">CAPTCHA: {captchaQuestion}</label>
+            <input
+              type="text"
+              value={captchaAnswer}
+              onChange={(e) => setCaptchaAnswer(e.target.value)}
+              className="input"
+            />
+            <button type="button" onClick={handleCaptchaSubmit} className="button button-small" style={{ marginTop: '8px' }}>{translations.verifyCaptcha}</button>
+            {captchaError && (
+              <div className="notification notification-error" style={{ position: 'absolute', top: '-50px', left: '0', width: '100%' }}>
+                {captchaError}
+              </div>
+            )}
+          </div>
           <div className="button-group" style={{ flexDirection: 'row' }}>
             <Link href={`/pasta/${id}`}><button type="button" className="button">{translations.cancel}</button></Link>
             <button type="submit" className="button" disabled={!loggedIn && !entry.filename && !captchaSolved}>{translations.save}</button>

@@ -159,24 +159,21 @@ export default function New() {
               )}
             </div>
           </div>
-          {!loggedIn && !captchaSolved && (
-            <div className="form-group" style={{ position: 'relative' }}>
-              <label className="label">CAPTCHA: {captchaQuestion}</label>
-              <input
-                type="text"
-                value={captchaAnswer}
-                onChange={(e) => setCaptchaAnswer(e.target.value)}
-                required
-                className="input"
-              />
-              <button type="button" onClick={handleCaptchaSubmit} className="button button-small" style={{ marginTop: '8px' }}>{translations.verifyCaptcha}</button>
-              {captchaError && (
-                <div className="notification notification-error" style={{ position: 'absolute', top: '-50px', left: '0', width: '100%' }}>
-                  {captchaError}
-                </div>
-              )}
-            </div>
-          )}
+          <div className="form-group" style={{ position: 'relative', display: (!loggedIn && !captchaSolved) ? 'block' : 'none' }}>
+            <label className="label">CAPTCHA: {captchaQuestion}</label>
+            <input
+              type="text"
+              value={captchaAnswer}
+              onChange={(e) => setCaptchaAnswer(e.target.value)}
+              className="input"
+            />
+            <button type="button" onClick={handleCaptchaSubmit} className="button button-small" style={{ marginTop: '8px' }}>{translations.verifyCaptcha}</button>
+            {captchaError && (
+              <div className="notification notification-error" style={{ position: 'absolute', top: '-50px', left: '0', width: '100%' }}>
+                {captchaError}
+              </div>
+            )}
+          </div>
           <button type="submit" className="button button-full" disabled={!loggedIn && !captchaSolved}>{translations.create}</button>
         </form>
         {error && <p className="error">{error}</p>}
