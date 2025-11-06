@@ -14,6 +14,7 @@ export default function Edit() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [file, setFile] = useState(null)
+  const [foundInGoogle, setFoundInGoogle] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [captchaQuestion, setCaptchaQuestion] = useState('')
@@ -38,6 +39,7 @@ export default function Edit() {
       setEntry(data)
       setTitle(data.title)
       setContent(data.content)
+      setFoundInGoogle(data.found_in_google || false)
     } catch (error) {
       console.error(error)
       setError(error.message)
@@ -94,7 +96,7 @@ export default function Edit() {
     setError('')
     try {
       if (loggedIn) {
-        await postEdit(id, content, title)
+        await postEdit(id, content, title, foundInGoogle)
       }
       if (file) {
         await postUploadImage(id, file.name, file)
@@ -228,6 +230,19 @@ export default function Edit() {
               </div>
             )}
           </div>
+          {loggedIn && (
+            <div className="form-group">
+              <label className="label">
+                <input
+                  type="checkbox"
+                  checked={foundInGoogle}
+                  onChange={(e) => setFoundInGoogle(e.target.checked)}
+                  style={{ transform: 'scale(1.2)', marginRight: '8px' }}
+                />
+                {translations.foundInGoogle}
+              </label>
+            </div>
+          )}
           <div className="form-group">
             {!entry.filename && (
               <>

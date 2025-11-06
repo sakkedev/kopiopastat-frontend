@@ -11,6 +11,7 @@ export default function New() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [file, setFile] = useState(null)
+  const [foundInGoogle, setFoundInGoogle] = useState(false)
   const [error, setError] = useState('')
   const [captchaQuestion, setCaptchaQuestion] = useState('')
   const [captchaIndex, setCaptchaIndex] = useState(null)
@@ -68,7 +69,7 @@ export default function New() {
     }
     setError('')
     try {
-      const data = await postNew(title, content, file)
+      const data = await postNew(title, content, file, foundInGoogle)
       router.push(`/pasta/${data.id}`)
     } catch (error) {
       console.error(error)
@@ -130,6 +131,17 @@ export default function New() {
               required
               className="textarea"
             />
+          </div>
+          <div className="form-group">
+            <label className="label">
+              <input
+                type="checkbox"
+                checked={foundInGoogle}
+                onChange={(e) => setFoundInGoogle(e.target.checked)}
+                style={{ transform: 'scale(1.2)', marginRight: '8px' }}
+              />
+              {translations.foundInGoogle}
+            </label>
           </div>
           <div className="form-group">
             <label className="label">{translations.uploadImageLabel}</label>

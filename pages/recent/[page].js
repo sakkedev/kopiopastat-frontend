@@ -148,6 +148,7 @@ export default function Recent() {
                         <p className="list-content">{entry.content}</p>
                       )}
                       <p className="list-timestamp">{new Date(entry.timestamp * 1000).toLocaleString('fi-FI')}</p>
+                      {entry.type === 'creation' && entry.found_in_google && <div className="list-title" style={{ fontSize: '12px', fontWeight: 'bold', fontStyle: 'italic' }}>({translations.foundInGoogleLabel})</div>}
                     </Link>
                     {isLoggedIn() && (
                       <button

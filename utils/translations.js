@@ -76,5 +76,7 @@ export const translations = {
   account: "Tili",
   sortByPopularity: "Järjestä suosion mukaan",
   sortByDate: "Järjestä päivämäärän mukaan",
-  sortByAZ: "Järjestä A-Z"
+  sortByAZ: "Järjestä A-Z",
+  foundInGoogle: "Tämä pasta löytyy myös googlesta",
+  foundInGoogleLabel: "Löytyy googlesta"
 }

@@ -138,9 +138,10 @@ export async function fetchVerifyCaptcha() {
   return res.json()
 }
 
-export async function postEdit(id, content, title = null) {
+export async function postEdit(id, content, title = null, foundInGoogle = null) {
   const body = { id, content }
   if (title !== null) body.title = title
+  if (foundInGoogle !== null) body.found_in_google = foundInGoogle
   const res = await fetch(`${API_BASE}/edit`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
@@ -158,10 +159,11 @@ export async function postEdit(id, content, title = null) {
   return res.json()
 }
 
-export async function postNew(title, content, file = null) {
+export async function postNew(title, content, file = null, foundInGoogle = false) {
   const formData = new FormData()
   formData.append('title', title)
   formData.append('content', content)
+  formData.append('found_in_google', foundInGoogle)
   if (file) {
     formData.append('filename', file.name)
     formData.append('file', file)
