@@ -22,8 +22,13 @@ export default function Edit() {
   const [captchaAnswer, setCaptchaAnswer] = useState('')
   const [captchaSolved, setCaptchaSolved] = useState(false)
   const [captchaError, setCaptchaError] = useState('')
+  const [isClient, setIsClient] = useState(false)
   const fileInputRef = useRef(null)
   const loggedIn = isLoggedIn()
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
     if (id) {
@@ -266,7 +271,7 @@ export default function Edit() {
               )}
             </div>
           </div>
-          <div className="form-group" style={{ position: 'relative', display: (!loggedIn && !entry.filename && !captchaSolved) ? 'block' : 'none' }}>
+          <div className="form-group" style={{ position: 'relative', display: (isClient && !loggedIn && !entry?.filename && !captchaSolved) ? 'block' : 'none' }}>
             <label className="label">CAPTCHA: {captchaQuestion}</label>
             <input
               type="text"

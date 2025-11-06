@@ -18,8 +18,13 @@ export default function New() {
   const [captchaAnswer, setCaptchaAnswer] = useState('')
   const [captchaSolved, setCaptchaSolved] = useState(false)
   const [captchaError, setCaptchaError] = useState('')
+  const [isClient, setIsClient] = useState(false)
   const fileInputRef = useRef(null)
   const loggedIn = isLoggedIn()
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const handlePaste = (e) => {
     const items = e.clipboardData.items
@@ -159,7 +164,7 @@ export default function New() {
               )}
             </div>
           </div>
-          <div className="form-group" style={{ position: 'relative', display: (!loggedIn && !captchaSolved) ? 'block' : 'none' }}>
+          <div className="form-group" style={{ position: 'relative', display: (isClient && !loggedIn && !captchaSolved) ? 'block' : 'none' }}>
             <label className="label">CAPTCHA: {captchaQuestion}</label>
             <input
               type="text"
