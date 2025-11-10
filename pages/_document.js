@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <link rel="icon" href="/kopiothumbnail.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <body>
         <script
